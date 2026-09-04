@@ -58,7 +58,7 @@
 </head>
 <body>
   <h1>Inloggen</h1>
-  <p class="hint">Kies je merk en gebruik dezelfde inloggegevens als in die app (Ariston NET of ATAG Zone).</p>
+  <p class="hint">Kies je merk en gebruik dezelfde inloggegevens als in de bijbehorende app.</p>
 
   <label for="brand">Merk</label>
   <select id="brand"></select>
@@ -92,7 +92,10 @@
         }
       } catch (err) {
         // Val terug op een vaste lijst als get_brands onverwacht faalt.
-        brandEl.innerHTML = '<option value="ariston">Ariston NET</option><option value="atag" selected>ATAG Zone</option>';
+        brandEl.innerHTML = '<option value="ariston">Ariston NET</option>'
+          + '<option value="atag" selected>ATAG Zone</option>'
+          + '<option value="chaffoteaux">Chaffoteaux</option>'
+          + '<option value="elco">ELCO</option>';
       }
     }
 

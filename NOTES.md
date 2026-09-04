@@ -252,8 +252,51 @@ merknaam/domeinnaam. De praktische keuze welke portal-URL de app gebruikt
 is dus puur een branding-vraag, geen technisch verschil in wat je kunt
 uitlezen. De app laat het merk daarom kiesbaar tijdens het koppelen (met
 Ariston NET als eerste optie in de lijst, ATAG Zone als voorgeselecteerde
-standaardwaarde omdat dat is wat Michels eigen ketel gebruikt). Chaffoteaux-
-en Elco-portals (genoemd door de hoofdsessie) draaien vermoedelijk op
-hetzelfde platform, maar zijn niet getest: geen bevestigde domeinnaam
-beschikbaar, dus niet in de app opgenomen om geen giswerk in productiecode
-te zetten.
+standaardwaarde omdat dat is wat Michels eigen ketel gebruikt).
+
+## Node-port: Python-runtime crasht op de macOS Self-Hosted Server
+
+De Python-versie (zie `python-legacy/`) valideerde prima op publish-niveau
+en installeerde op de Self-Hosted Server, maar crashte daar bij het
+opstarten in Homey's core: `Error: uv_pipe_chmod EINVAL at
+AppLocal.createUnixDomainSocket`, reproduceerbaar na een herstart. Oorzaak:
+de Python-runtime communiceert met de core via een Unix-domain-socket, en
+de app-map van de macOS-SHS staat op een virtiofs-share tussen macOS en de
+Homey-VM, waar zulke sockets niet werken. Node-apps op dezelfde SHS
+(Bambu, Solcast, HomeyLink) draaiden wel gewoon. Daarom is de app herbouwd
+als JavaScript SDK 3-app (`app.js`, `api.js`, `lib/aristonClient.js`,
+`drivers/thermostat/*.js`) met Node's ingebouwde `fetch`, geen zware
+dependencies. Alle endpoints, headers, de HybridMode/Buffer-valkuil en de
+merken-aanpak hierboven zijn ongewijzigd overgenomen. De Node-versie van
+`lib/aristonClient.js` is opnieuw end-to-end getest tegen de echte cloud
+(login, plants, features, dataItems, menuItems), zelfde resultaten als de
+Python-versie hierboven. `homey app validate --level publish` slaagt
+zonder Docker nodig te hebben (dat was exact het probleem bij de
+Python-versie: Docker was alleen nodig om Python-dependencies te
+compileren).
+
+## Chaffoteaux en ELCO: portal-domeinen gevonden, niet getest
+
+Op verzoek van de hoofdsessie zijn Chaffoteaux en ELCO toegevoegd als
+kiesbare merken naast Ariston NET en ATAG Zone. Via onderzoek (GitHub-
+issues, Home Assistant-community, een AppDaemon-project) zijn de
+vermoedelijke portal-domeinen gevonden:
+- Chaffoteaux: `https://www.chaffolink.remotethermo.com/`
+- ELCO: `https://www.remocon-net.remotethermo.com/`
+
+Beide domeinen bestaan en vertonen exact hetzelfde gedrag als de bevestigd
+werkende Ariston NET/ATAG Zone-hosts (redirect van `/` naar
+`/R2/Account/Login`, en een POST naar `/api/v2/accounts/login` met
+verzonnen inloggegevens geeft HTTP 404, wat ik heb geverifieerd dat ook de
+foutcode is die Ariston NET/ATAG Zone geven bij foute inloggegevens, niet
+bij een niet-bestaand endpoint: met Michels echte inloggegevens gaf
+diezelfde aanroep gewoon HTTP 200). Dat is een sterke aanwijzing dat beide
+op hetzelfde `/api/v2/`-platform draaien, maar het is **niet bevestigd met
+een echt account**: niemand in dit project heeft een Chaffoteaux- of
+ELCO-installatie om mee in te loggen. Voor ELCO is er bovendien een oudere,
+losstaande "Remocon-Net"-automatisering gevonden (`nechry/remocon2mqtt`)
+die een heel ander, ouder API-pad gebruikt (`/R2/Account/Login` met
+form-post en cookies, niet `/api/v2/`) — mogelijk voor een ouder
+ELCO-productlijn op dezelfde domeinnaam. Als een Chaffoteaux- of
+ELCO-gebruiker zich meldt en het inloggen faalt onverwacht, is dit de
+eerste plek om te kijken.

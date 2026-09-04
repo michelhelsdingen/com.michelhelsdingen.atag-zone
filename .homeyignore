@@ -1,6 +1,4 @@
 node_modules/
-__pycache__/
-*.pyc
 .git/
 .homeybuild/
 .gitignore
@@ -10,3 +8,4 @@ ha-config-entry.json
 ha-entities.txt
 NOTES.md
 spike/
+python-legacy/

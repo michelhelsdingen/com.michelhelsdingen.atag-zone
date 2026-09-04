@@ -1,9 +1,7 @@
 node_modules/
 .homeybuild/
-__pycache__/
-*.pyc
 .env
-.pytest_cache/
+python_packages/
 snapshot.json
 
 # Materiaal van Michel, nooit in de repo

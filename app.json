@@ -4,12 +4,10 @@
   "version": "0.1.0",
   "compatibility": ">=13.0.0",
   "sdk": 3,
-  "runtime": "python",
   "platforms": [
     "local"
   ],
   "permissions": [],
-  "pythonVersion": "3.14",
   "brandColor": "#0072BC",
   "name": {
     "en": "Ariston NET / ATAG Zone",
@@ -25,15 +23,12 @@
     "large": "/assets/images/large.png",
     "xlarge": "/assets/images/xlarge.png"
   },
-  "pythonPackages": [
-    "httpx>=0.27.0"
-  ],
   "api": {
-    "get_settings": {
+    "getSettings": {
       "method": "GET",
       "path": "/settings"
     },
-    "post_save_settings": {
+    "saveSettings": {
       "method": "POST",
       "path": "/save_settings"
     }
