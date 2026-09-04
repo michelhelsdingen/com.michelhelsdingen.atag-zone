@@ -1,0 +1,276 @@
+{
+  "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
+  "id": "com.michelhelsdingen.ariston-net",
+  "version": "0.1.0",
+  "compatibility": ">=13.0.0",
+  "sdk": 3,
+  "runtime": "python",
+  "platforms": [
+    "local"
+  ],
+  "permissions": [],
+  "pythonVersion": "3.14",
+  "brandColor": "#0072BC",
+  "name": {
+    "en": "Ariston NET",
+    "nl": "Ariston NET"
+  },
+  "description": {
+    "en": "Control your Ariston NET connected boiler and room thermostat.",
+    "nl": "Bedien je Ariston NET cv-ketel en kamerthermostaat."
+  },
+  "category": "climate",
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "pythonPackages": [
+    "httpx>=0.27.0"
+  ],
+  "api": {
+    "get_settings": {
+      "method": "GET",
+      "path": "/settings"
+    },
+    "post_save_settings": {
+      "method": "POST",
+      "path": "/save_settings"
+    }
+  },
+  "author": {
+    "name": "Michel Helsdingen",
+    "email": "michel@helsdingen.dev"
+  },
+  "tags": {
+    "en": [
+      "ariston",
+      "ariston net",
+      "cv-ketel",
+      "boiler",
+      "thermostat",
+      "heating"
+    ],
+    "nl": [
+      "ariston",
+      "ariston net",
+      "cv-ketel",
+      "ketel",
+      "thermostaat",
+      "verwarming"
+    ]
+  },
+  "source": "https://github.com/michelhelsdingen/ariston-net",
+  "support": "https://github.com/michelhelsdingen/ariston-net/issues",
+  "bugs": {
+    "url": "https://github.com/michelhelsdingen/ariston-net/issues"
+  },
+  "homeyCommunityTopicId": 0,
+  "flow": {
+    "triggers": [
+      {
+        "title": {
+          "en": "Boiler burner started or stopped",
+          "nl": "Ketel is gaan branden of gestopt"
+        },
+        "titleFormatted": {
+          "en": "The boiler burner turns [[state]]",
+          "nl": "De ketel-brander gaat [[state]]"
+        },
+        "args": [
+          {
+            "name": "state",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "on",
+                "label": {
+                  "en": "on (started burning)",
+                  "nl": "aan (gaan branden)"
+                }
+              },
+              {
+                "id": "off",
+                "label": {
+                  "en": "off (stopped)",
+                  "nl": "uit (gestopt)"
+                }
+              }
+            ]
+          }
+        ],
+        "tokens": [
+          {
+            "name": "is_flame_on",
+            "type": "boolean",
+            "title": {
+              "en": "Burner active",
+              "nl": "Brander actief"
+            },
+            "example": true
+          }
+        ],
+        "id": "ariston_boiler_status_changed"
+      }
+    ],
+    "conditions": [
+      {
+        "title": {
+          "en": "Water pressure !{{is|is not}} lower than",
+          "nl": "Waterdruk !{{is|is niet}} lager dan"
+        },
+        "titleFormatted": {
+          "en": "Water pressure !{{is|is not}} lower than [[pressure]] bar",
+          "nl": "Waterdruk !{{is|is niet}} lager dan [[pressure]] bar"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=thermostat"
+          },
+          {
+            "name": "pressure",
+            "type": "number",
+            "min": 0,
+            "max": 5,
+            "step": 0.1,
+            "label": "bar",
+            "labelDecimals": 1
+          }
+        ],
+        "id": "ariston_pressure_below"
+      }
+    ]
+  },
+  "drivers": [
+    {
+      "name": {
+        "en": "Ariston Boiler",
+        "nl": "Ariston Ketel"
+      },
+      "class": "thermostat",
+      "capabilities": [
+        "target_temperature",
+        "measure_temperature",
+        "measure_temperature.outdoor",
+        "measure_pressure",
+        "boiler_active",
+        "thermostat_mode"
+      ],
+      "capabilitiesOptions": {
+        "target_temperature": {
+          "min": 10,
+          "max": 30,
+          "step": 0.5
+        },
+        "measure_temperature.outdoor": {
+          "title": {
+            "en": "Outdoor temperature",
+            "nl": "Buitentemperatuur"
+          }
+        },
+        "measure_pressure": {
+          "title": {
+            "en": "Water pressure",
+            "nl": "Waterdruk"
+          },
+          "units": {
+            "en": "bar",
+            "nl": "bar"
+          },
+          "decimals": 1
+        },
+        "thermostat_mode": {
+          "values": [
+            {
+              "id": "off",
+              "title": {
+                "en": "Off",
+                "nl": "Uit"
+              }
+            },
+            {
+              "id": "heat",
+              "title": {
+                "en": "Manual",
+                "nl": "Handmatig"
+              }
+            },
+            {
+              "id": "auto",
+              "title": {
+                "en": "Time program",
+                "nl": "Tijdprogramma"
+              }
+            }
+          ]
+        }
+      },
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [
+        "cloud"
+      ],
+      "pair": [
+        {
+          "id": "login"
+        },
+        {
+          "id": "list_devices"
+        }
+      ],
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "Ariston NET",
+            "nl": "Ariston NET"
+          },
+          "children": [
+            {
+              "id": "poll_interval",
+              "type": "number",
+              "label": {
+                "en": "Poll interval (seconds)",
+                "nl": "Ververs-interval (seconden)"
+              },
+              "value": 180,
+              "min": 60,
+              "max": 3600,
+              "units": {
+                "en": "s",
+                "nl": "s"
+              }
+            }
+          ]
+        }
+      ],
+      "images": {
+        "small": "/drivers/thermostat/assets/images/small.png",
+        "large": "/drivers/thermostat/assets/images/large.png",
+        "xlarge": "/drivers/thermostat/assets/images/xlarge.png"
+      },
+      "id": "thermostat"
+    }
+  ],
+  "capabilities": {
+    "boiler_active": {
+      "type": "boolean",
+      "title": {
+        "en": "Burner active",
+        "nl": "Brander actief"
+      },
+      "desc": {
+        "en": "Whether the boiler's burner (flame) is currently active",
+        "nl": "Of de brander (vlam) van de ketel op dit moment aan staat"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "icon": "/assets/boiler_active.svg",
+      "insights": true
+    }
+  }
+}

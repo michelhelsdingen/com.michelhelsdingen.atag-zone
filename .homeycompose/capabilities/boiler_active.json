@@ -1,0 +1,16 @@
+{
+  "type": "boolean",
+  "title": {
+    "en": "Burner active",
+    "nl": "Brander actief"
+  },
+  "desc": {
+    "en": "Whether the boiler's burner (flame) is currently active",
+    "nl": "Of de brander (vlam) van de ketel op dit moment aan staat"
+  },
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "icon": "/assets/boiler_active.svg",
+  "insights": true
+}

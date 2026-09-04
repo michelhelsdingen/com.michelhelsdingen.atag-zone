@@ -1,0 +1,18 @@
+{
+  "settings": {
+    "title": "Ariston NET - Settings"
+  },
+  "errors": {
+    "invalid_credentials": "Invalid credentials",
+    "connection_timeout": "Connection to Ariston-net timed out",
+    "no_plants": "No installations found on this account",
+    "write_disabled": "Writing to the boiler is disabled",
+    "unknown_error": "An unknown error occurred"
+  },
+  "drivers": {
+    "thermostat": {
+      "name": "Ariston Boiler",
+      "description": "Combi boiler with room thermostat via the Ariston NET cloud."
+    }
+  }
+}

@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 24px;
+    }
+    h1 {
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+    p.hint {
+      color: #666;
+      font-size: 13px;
+      margin-top: 0;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 16px;
+    }
+    li {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    li:hover {
+      border-color: #0072bc;
+      background: #f2f8fd;
+    }
+    li .name {
+      font-weight: 600;
+      font-size: 14px;
+    }
+    li .gw {
+      color: #888;
+      font-size: 12px;
+    }
+    #status {
+      font-size: 13px;
+      color: #666;
+      margin-top: 16px;
+    }
+    #error {
+      color: #c0392b;
+      font-size: 13px;
+      margin-top: 12px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Kies je installatie</h1>
+  <p class="hint">Dit zijn de installaties (plants) die bij dit Ariston NET-account horen.</p>
+
+  <ul id="plants"></ul>
+  <div id="status">Laden...</div>
+  <div id="error"></div>
+
+  <script>
+    const listEl = document.getElementById('plants');
+    const statusEl = document.getElementById('status');
+    const errorEl = document.getElementById('error');
+
+    async function loadPlants() {
+      try {
+        const plants = await Homey.emit('list_plants', {});
+        listEl.innerHTML = '';
+        statusEl.style.display = 'none';
+
+        if (!plants || plants.length === 0) {
+          statusEl.style.display = 'block';
+          statusEl.textContent = 'Geen installaties gevonden.';
+          return;
+        }
+
+        for (const plant of plants) {
+          const li = document.createElement('li');
+          li.innerHTML = '<div class="name"></div><div class="gw"></div>';
+          li.querySelector('.name').textContent = plant.name;
+          li.querySelector('.gw').textContent = plant.gw;
+          li.addEventListener('click', () => selectPlant(plant.gw));
+          listEl.appendChild(li);
+        }
+      } catch (err) {
+        statusEl.style.display = 'none';
+        errorEl.style.display = 'block';
+        errorEl.textContent = 'Kon installaties niet laden: ' + (err && err.message ? err.message : err);
+      }
+    }
+
+    async function selectPlant(gw) {
+      errorEl.style.display = 'none';
+      statusEl.style.display = 'block';
+      statusEl.textContent = 'Apparaat toevoegen...';
+
+      try {
+        const result = await Homey.emit('select_plant', { gw });
+        if (result && result.success) {
+          await Homey.createDevice(result.device);
+          Homey.done();
+        } else {
+          statusEl.style.display = 'none';
+          errorEl.style.display = 'block';
+          errorEl.textContent = (result && result.error) || 'Toevoegen mislukt.';
+        }
+      } catch (err) {
+        statusEl.style.display = 'none';
+        errorEl.style.display = 'block';
+        errorEl.textContent = 'Onverwachte fout: ' + (err && err.message ? err.message : err);
+      }
+    }
+
+    loadPlants();
+  </script>
+</body>
+</html>

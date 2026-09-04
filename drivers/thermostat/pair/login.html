@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 24px;
+    }
+    h1 {
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+    p.hint {
+      color: #666;
+      font-size: 13px;
+      margin-top: 0;
+    }
+    label {
+      display: block;
+      margin-top: 16px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 8px 10px;
+      margin-top: 4px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      background: #0072bc;
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:disabled {
+      opacity: 0.6;
+      cursor: default;
+    }
+    #error {
+      color: #c0392b;
+      font-size: 13px;
+      margin-top: 12px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Inloggen bij Ariston NET</h1>
+  <p class="hint">Gebruik dezelfde inloggegevens als in de Ariston NET app.</p>
+
+  <label for="username">E-mailadres</label>
+  <input type="email" id="username" autocomplete="username">
+
+  <label for="password">Wachtwoord</label>
+  <input type="password" id="password" autocomplete="current-password">
+
+  <button id="submit">Inloggen</button>
+  <div id="error"></div>
+
+  <script>
+    const btn = document.getElementById('submit');
+    const errorEl = document.getElementById('error');
+
+    btn.addEventListener('click', async () => {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      errorEl.style.display = 'none';
+      btn.disabled = true;
+      btn.textContent = 'Bezig...';
+
+      try {
+        const result = await Homey.emit('login', { username, password });
+        if (result && result.success) {
+          Homey.showView('list_devices');
+        } else {
+          errorEl.textContent = (result && result.error) || 'Inloggen mislukt.';
+          errorEl.style.display = 'block';
+        }
+      } catch (err) {
+        errorEl.textContent = 'Onverwachte fout: ' + (err && err.message ? err.message : err);
+        errorEl.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Inloggen';
+      }
+    });
+  </script>
+</body>
+</html>

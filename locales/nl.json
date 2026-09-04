@@ -1,0 +1,18 @@
+{
+  "settings": {
+    "title": "Ariston NET - Instellingen"
+  },
+  "errors": {
+    "invalid_credentials": "Ongeldige inloggegevens",
+    "connection_timeout": "Verbinding met Ariston-net verlopen",
+    "no_plants": "Geen installaties gevonden op dit account",
+    "write_disabled": "Schrijven naar de ketel staat uit",
+    "unknown_error": "Er is een onbekende fout opgetreden"
+  },
+  "drivers": {
+    "thermostat": {
+      "name": "Ariston Ketel",
+      "description": "Cv-ketel met kamerthermostaat via de Ariston NET cloud."
+    }
+  }
+}

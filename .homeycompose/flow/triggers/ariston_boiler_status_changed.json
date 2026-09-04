@@ -1,0 +1,28 @@
+{
+  "title": {
+    "en": "Boiler burner started or stopped",
+    "nl": "Ketel is gaan branden of gestopt"
+  },
+  "titleFormatted": {
+    "en": "The boiler burner turns [[state]]",
+    "nl": "De ketel-brander gaat [[state]]"
+  },
+  "args": [
+    {
+      "name": "state",
+      "type": "dropdown",
+      "values": [
+        { "id": "on", "label": { "en": "on (started burning)", "nl": "aan (gaan branden)" } },
+        { "id": "off", "label": { "en": "off (stopped)", "nl": "uit (gestopt)" } }
+      ]
+    }
+  ],
+  "tokens": [
+    {
+      "name": "is_flame_on",
+      "type": "boolean",
+      "title": { "en": "Burner active", "nl": "Brander actief" },
+      "example": true
+    }
+  ]
+}

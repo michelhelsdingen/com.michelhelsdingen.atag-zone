@@ -1,0 +1,12 @@
+node_modules/
+__pycache__/
+*.pyc
+.git/
+.homeybuild/
+.gitignore
+.homeyignore
+.env
+ha-config-entry.json
+ha-entities.txt
+NOTES.md
+spike/

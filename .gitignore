@@ -1,0 +1,11 @@
+node_modules/
+.homeybuild/
+__pycache__/
+*.pyc
+.env
+.pytest_cache/
+snapshot.json
+
+# Materiaal van Michel, nooit in de repo
+ha-config-entry.json
+ha-entities.txt

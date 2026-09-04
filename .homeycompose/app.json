@@ -1,0 +1,68 @@
+{
+  "id": "com.michelhelsdingen.ariston-net",
+  "version": "0.1.0",
+  "compatibility": ">=13.0.0",
+  "sdk": 3,
+  "runtime": "python",
+  "platforms": [
+    "local"
+  ],
+  "permissions": [],
+  "pythonVersion": "3.14",
+  "brandColor": "#0072BC",
+  "name": {
+    "en": "Ariston NET",
+    "nl": "Ariston NET"
+  },
+  "description": {
+    "en": "Control your Ariston NET connected boiler and room thermostat.",
+    "nl": "Bedien je Ariston NET cv-ketel en kamerthermostaat."
+  },
+  "category": "climate",
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "pythonPackages": [
+    "httpx>=0.27.0"
+  ],
+  "api": {
+    "get_settings": {
+      "method": "GET",
+      "path": "/settings"
+    },
+    "post_save_settings": {
+      "method": "POST",
+      "path": "/save_settings"
+    }
+  },
+  "author": {
+    "name": "Michel Helsdingen",
+    "email": "michel@helsdingen.dev"
+  },
+  "tags": {
+    "en": [
+      "ariston",
+      "ariston net",
+      "cv-ketel",
+      "boiler",
+      "thermostat",
+      "heating"
+    ],
+    "nl": [
+      "ariston",
+      "ariston net",
+      "cv-ketel",
+      "ketel",
+      "thermostaat",
+      "verwarming"
+    ]
+  },
+  "source": "https://github.com/michelhelsdingen/ariston-net",
+  "support": "https://github.com/michelhelsdingen/ariston-net/issues",
+  "bugs": {
+    "url": "https://github.com/michelhelsdingen/ariston-net/issues"
+  },
+  "homeyCommunityTopicId": 0
+}

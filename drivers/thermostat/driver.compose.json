@@ -1,0 +1,91 @@
+{
+  "name": {
+    "en": "Ariston Boiler",
+    "nl": "Ariston Ketel"
+  },
+  "class": "thermostat",
+  "capabilities": [
+    "target_temperature",
+    "measure_temperature",
+    "measure_temperature.outdoor",
+    "measure_pressure",
+    "boiler_active",
+    "thermostat_mode"
+  ],
+  "capabilitiesOptions": {
+    "target_temperature": {
+      "min": 10,
+      "max": 30,
+      "step": 0.5
+    },
+    "measure_temperature.outdoor": {
+      "title": {
+        "en": "Outdoor temperature",
+        "nl": "Buitentemperatuur"
+      }
+    },
+    "measure_pressure": {
+      "title": {
+        "en": "Water pressure",
+        "nl": "Waterdruk"
+      },
+      "units": {
+        "en": "bar",
+        "nl": "bar"
+      },
+      "decimals": 1
+    },
+    "thermostat_mode": {
+      "values": [
+        { "id": "off", "title": { "en": "Off", "nl": "Uit" } },
+        { "id": "heat", "title": { "en": "Manual", "nl": "Handmatig" } },
+        { "id": "auto", "title": { "en": "Time program", "nl": "Tijdprogramma" } }
+      ]
+    }
+  },
+  "platforms": [
+    "local"
+  ],
+  "connectivity": [
+    "cloud"
+  ],
+  "pair": [
+    {
+      "id": "login"
+    },
+    {
+      "id": "list_devices"
+    }
+  ],
+  "settings": [
+    {
+      "type": "group",
+      "label": {
+        "en": "Ariston NET",
+        "nl": "Ariston NET"
+      },
+      "children": [
+        {
+          "id": "poll_interval",
+          "type": "number",
+          "label": {
+            "en": "Poll interval (seconds)",
+            "nl": "Ververs-interval (seconden)"
+          },
+          "value": 180,
+          "min": 60,
+          "max": 3600,
+          "units": {
+            "en": "s",
+            "nl": "s"
+          }
+        }
+      ]
+    }
+  ],
+  "images": {
+    "small": "{{driverAssetsPath}}/images/small.png",
+    "large": "{{driverAssetsPath}}/images/large.png",
+    "xlarge": "{{driverAssetsPath}}/images/xlarge.png"
+  }
+}

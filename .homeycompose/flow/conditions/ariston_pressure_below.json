@@ -1,0 +1,26 @@
+{
+  "title": {
+    "en": "Water pressure !{{is|is not}} lower than",
+    "nl": "Waterdruk !{{is|is niet}} lager dan"
+  },
+  "titleFormatted": {
+    "en": "Water pressure !{{is|is not}} lower than [[pressure]] bar",
+    "nl": "Waterdruk !{{is|is niet}} lager dan [[pressure]] bar"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=thermostat"
+    },
+    {
+      "name": "pressure",
+      "type": "number",
+      "min": 0,
+      "max": 5,
+      "step": 0.1,
+      "label": "bar",
+      "labelDecimals": 1
+    }
+  ]
+}
