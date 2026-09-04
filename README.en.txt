@@ -19,3 +19,5 @@ Safe by default:
 The app only reads. Setting the temperature and mode is built in but stays off until you enable it in the app settings, so nothing changes to your heating unless you want it to.
 
 This app is not made or endorsed by ATAG or Ariston Group.
+
+Made by Michel Helsdingen, Vakwark.ai

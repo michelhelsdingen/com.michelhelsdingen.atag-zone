@@ -19,3 +19,5 @@ Veilig standaard:
 De app leest alleen. Het instellen van de temperatuur en de modus zit er wel in, maar staat uit tot je het zelf aanzet in de app-instellingen. Zo verandert er niets aan je verwarming zolang je dat niet wilt.
 
 Deze app is niet gemaakt of goedgekeurd door ATAG of Ariston Group.
+
+Gemaakt door Michel Helsdingen, Vakwark.ai

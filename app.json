@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.michelhelsdingen.atag-zone",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "compatibility": ">=13.0.0",
   "sdk": 3,
   "platforms": [
@@ -35,13 +35,14 @@
   },
   "author": {
     "name": "Michel Helsdingen",
-    "email": "michel@helsdingen.dev"
+    "email": "info@vakwark.ai",
+    "website": "https://vakwark.ai"
   },
   "contributors": {
     "developers": [
       {
         "name": "Michel Helsdingen",
-        "email": "michel@helsdingen.dev"
+        "email": "info@vakwark.ai"
       }
     ]
   },
@@ -72,9 +73,9 @@
       "verwarming"
     ]
   },
-  "homepage": "https://github.com/michelhelsdingen/com.michelhelsdingen.atag-zone",
+  "homepage": "https://vakwark.ai",
   "source": "https://github.com/michelhelsdingen/com.michelhelsdingen.atag-zone",
-  "support": "https://community.homey.app",
+  "support": "https://github.com/michelhelsdingen/com.michelhelsdingen.atag-zone/issues",
   "bugs": {
     "url": "https://github.com/michelhelsdingen/com.michelhelsdingen.atag-zone/issues"
   },
