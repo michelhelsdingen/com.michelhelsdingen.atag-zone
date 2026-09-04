@@ -6,5 +6,9 @@
   "1.0.1": {
     "en": "Author and homepage details updated.",
     "nl": "Auteursgegevens en website bijgewerkt."
+  },
+  "1.0.2": {
+    "en": "Fixed the settings screen: it no longer keeps loading.",
+    "nl": "Instellingenscherm hersteld: hij blijft niet meer laden."
   }
 }

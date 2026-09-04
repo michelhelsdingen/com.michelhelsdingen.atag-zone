@@ -2,14 +2,13 @@
 <html>
 <head>
   <meta charset="utf-8">
+  <script type="text/javascript" src="/homey.js" data-origin="settings"></script>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       padding: 16px;
     }
-    h1 {
-      font-size: 18px;
-    }
+    h1 { font-size: 18px; margin: 0 0 4px; }
     .section {
       margin-top: 20px;
       padding: 16px;
@@ -39,60 +38,59 @@
       font-weight: 600;
       cursor: pointer;
     }
-    .status {
-      margin-top: 10px;
-      font-size: 13px;
-    }
+    .status { margin-top: 10px; font-size: 13px; min-height: 18px; }
     .status.ok { color: #1a7a3c; }
     .status.fail { color: #c0392b; }
   </style>
 </head>
 <body>
-  <h1>Ariston NET / ATAG Zone</h1>
+  <h1 data-i18n="settings.title">ATAG Zone</h1>
 
   <div class="section">
     <label>
       <input type="checkbox" id="write_enabled">
-      <span>Schrijven naar de ketel toestaan</span>
+      <span id="lbl">Schrijven naar de ketel toestaan</span>
     </label>
-    <p class="hint">
-      Staat standaard uit. Zolang dit uit staat, leest de app alleen de
-      ketel uit en verandert er nooit iets (doeltemperatuur, modus,
-      warmwater). Alleen aanzetten na overleg met Michel dat schrijven
-      veilig is.
+    <p class="hint" id="hint">
+      Staat standaard uit. Zolang dit uit staat leest de app alleen de ketel uit
+      en verandert er nooit iets aan je verwarming. Zet dit pas aan als je hebt
+      gecontroleerd dat het instellen van de temperatuur bij jouw installatie
+      goed werkt.
     </p>
   </div>
 
-  <button class="save-btn" onclick="saveSettings()">Opslaan</button>
+  <button class="save-btn" id="save">Opslaan</button>
   <div id="status" class="status"></div>
 
-  <script>
-    async function loadSettings() {
-      try {
-        const s = await Homey.api('GET', '/settings', null);
-        document.getElementById('write_enabled').checked = !!s.write_enabled;
-      } catch (e) {
-        console.error('loadSettings error:', e);
-      }
-      Homey.ready();
-    }
+  <script type="text/javascript">
+    function onHomeyReady(Homey) {
+      var box = document.getElementById('write_enabled');
+      var status = document.getElementById('status');
 
-    async function saveSettings() {
-      const statusEl = document.getElementById('status');
-      statusEl.className = 'status';
-      statusEl.textContent = 'Opslaan...';
-      try {
-        const write_enabled = document.getElementById('write_enabled').checked;
-        const r = await Homey.api('POST', '/save_settings', { write_enabled });
-        statusEl.className = 'status ' + (r.success ? 'ok' : 'fail');
-        statusEl.textContent = r.success ? 'Opgeslagen.' : 'Opslaan mislukt.';
-      } catch (e) {
-        statusEl.className = 'status fail';
-        statusEl.textContent = 'Opslaan mislukt: ' + (e && e.message ? e.message : e);
+      function setStatus(text, ok) {
+        status.textContent = text || '';
+        status.className = 'status' + (text ? (ok ? ' ok' : ' fail') : '');
       }
-    }
 
-    loadSettings();
+      Homey.get('write_enabled', function (err, value) {
+        if (err) {
+          setStatus('Instelling kon niet worden geladen.', false);
+        } else {
+          box.checked = Boolean(value);
+        }
+        Homey.ready();
+      });
+
+      document.getElementById('save').addEventListener('click', function () {
+        setStatus('Opslaan...', true);
+        Homey.set('write_enabled', box.checked, function (err) {
+          if (err) return setStatus('Opslaan mislukt: ' + err, false);
+          setStatus(box.checked
+            ? 'Opgeslagen. Schrijven naar de ketel staat nu AAN.'
+            : 'Opgeslagen. De app leest alleen.', true);
+        });
+      });
+    }
   </script>
 </body>
 </html>
