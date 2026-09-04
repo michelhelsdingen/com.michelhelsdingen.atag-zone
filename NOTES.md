@@ -300,3 +300,48 @@ form-post en cookies, niet `/api/v2/`) — mogelijk voor een ouder
 ELCO-productlijn op dezelfde domeinnaam. Als een Chaffoteaux- of
 ELCO-gebruiker zich meldt en het inloggen faalt onverwacht, is dit de
 eerste plek om te kijken.
+
+## App Store: naam, icoon en assets
+
+**Naam en id**: app heet nu "ATAG Zone" (nl/en), app-id
+`com.michelhelsdingen.atag-zone`, versie 1.0.0. Ariston NET, Chaffoteaux en
+ELCO blijven kiesbaar tijdens het koppelen en staan genoemd in de
+beschrijving en tags, ATAG Zone is en blijft de standaardkeuze. Dit was
+nog niet gepubliceerd, dus de app-id-wijziging kon zonder problemen.
+
+**Icoon: geen ATAG-merklogo, wel ATAG-achtige kleuren.** Homey's eigen
+App Store-richtlijnen (`apps.developer.homey.app/app-store/guidelines`)
+zeggen letterlijk: "If your app supports a specific brand, use the
+company's brand icon" en "use the brand name for your app" — dat pleit op
+het eerste gezicht vóór het gebruik van het echte ATAG-logo. Maar die
+richtlijn gaat over hoe Homey's eigen store-presentatie eruit hoort te
+zien, niet over auteursrecht/merkenrecht: het geeft geen toestemming van
+ATAG/Ariston Group zelf om hun geregistreerde merklogo te gebruiken in een
+niet-officiële, community-gebouwde app. Zonder bevestigde toestemming van
+het merk is dat een reëel risico (denial/takedown van de store-listing,
+in het ergste geval een juridische klacht), voor een risico dat volledig
+te vermijden is. Daarom gekozen voor de andere optie die in de opdracht
+zelf al genoemd stond: een eigen ontwerp dat meteen als thermostaat/cv
+herkenbaar is, in ATAG-achtige kleuren (blauw #0072BC, oranje #F26522)
+maar zonder het echte logo te kopiëren. Ontwerp: een ronde thermostaat-
+schijf (ring) met een kleine wijzer-inkeping bovenaan, met een vlam
+gecentreerd erin. Werkt herkenbaar op elk formaat, geen tekst.
+
+**Technische eisen gevolgd**: transparante achtergrond, volledig
+960x960-canvas, vector-gebaseerd (geen gevulde illustratie/gradient/
+achtergrondkleur), driver-icoon is een apart bestand (niet hetzelfde
+bestand hergebruikt als app-icoon, wel dezelfde visuele stijl). Bron:
+dezelfde guidelines-pagina hierboven.
+
+**Assets herhaalbaar gegenereerd**: `scripts/generate-assets.sh` (bash +
+ImageMagick, `brew install imagemagick`) rendert `assets/icon.svg` en
+`drivers/thermostat/assets/icon.svg` naar alle vereiste PNG-formaten
+(app: 250x175/500x350/1000x700, driver: 75x75/500x500/1000x1000), met
+behoud van transparantie. Opnieuw draaien na een icoon-wijziging:
+`bash scripts/generate-assets.sh`.
+
+**Support-link**: `support` in app.json staat voorlopig op
+`https://community.homey.app` (placeholder, geen eigen forum-topic of
+mailadres verzonnen). Michel: dit wil je waarschijnlijk vervangen door een
+eigen GitHub-issues-link (staat al goed, zie `bugs.url`) of een concreet
+Homey Community-forumtopic zodra dat bestaat.

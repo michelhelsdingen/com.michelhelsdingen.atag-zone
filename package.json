@@ -1,6 +1,6 @@
 {
-  "name": "com.michelhelsdingen.ariston-net",
-  "version": "0.1.0",
+  "name": "com.michelhelsdingen.atag-zone",
+  "version": "1.0.0",
   "main": "app.js",
   "dependencies": {}
 }

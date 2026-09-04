@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
-  "id": "com.michelhelsdingen.ariston-net",
-  "version": "0.1.0",
+  "id": "com.michelhelsdingen.atag-zone",
+  "version": "1.0.0",
   "compatibility": ">=13.0.0",
   "sdk": 3,
   "platforms": [
@@ -10,12 +10,12 @@
   "permissions": [],
   "brandColor": "#0072BC",
   "name": {
-    "en": "Ariston NET / ATAG Zone",
-    "nl": "Ariston NET / ATAG Zone"
+    "en": "ATAG Zone",
+    "nl": "ATAG Zone"
   },
   "description": {
-    "en": "Control your Ariston NET or ATAG Zone connected boiler and room thermostat.",
-    "nl": "Bedien je Ariston NET of ATAG Zone cv-ketel en kamerthermostaat."
+    "en": "Read out your ATAG Zone connected boiler and room thermostat: room and outdoor temperature, target temperature, water pressure and burner status. Also works with Ariston NET (same cloud platform). Chaffoteaux and ELCO are selectable but untested. Writing to the boiler (target temperature, mode) is off by default; enable it in the app settings once you have confirmed it works for your installation.",
+    "nl": "Lees je ATAG Zone cv-ketel en kamerthermostaat uit: kamer- en buitentemperatuur, doeltemperatuur, waterdruk en brander-status. Werkt ook met Ariston NET (zelfde cloudplatform). Chaffoteaux en ELCO zijn kiesbaar maar ongetest. Schrijven naar de ketel (doeltemperatuur, modus) staat standaard uit; zet dit aan in de app-instellingen zodra je hebt gecontroleerd dat het voor jouw installatie werkt."
   },
   "category": "climate",
   "images": {
@@ -37,34 +37,46 @@
     "name": "Michel Helsdingen",
     "email": "michel@helsdingen.dev"
   },
+  "contributors": {
+    "developers": [
+      {
+        "name": "Michel Helsdingen",
+        "email": "michel@helsdingen.dev"
+      }
+    ]
+  },
   "tags": {
     "en": [
-      "ariston",
-      "ariston net",
       "atag",
       "atag zone",
       "atag one",
-      "cv-ketel",
+      "ariston",
+      "ariston net",
+      "chaffoteaux",
+      "elco",
       "boiler",
       "thermostat",
       "heating"
     ],
     "nl": [
-      "ariston",
-      "ariston net",
       "atag",
       "atag zone",
       "atag one",
+      "ariston",
+      "ariston net",
+      "chaffoteaux",
+      "elco",
       "cv-ketel",
       "ketel",
       "thermostaat",
       "verwarming"
     ]
   },
-  "source": "https://github.com/michelhelsdingen/ariston-net",
-  "support": "https://github.com/michelhelsdingen/ariston-net/issues",
+  "homepage": "https://github.com/michelhelsdingen/com.michelhelsdingen.atag-zone",
+  "source": "https://github.com/michelhelsdingen/com.michelhelsdingen.atag-zone",
+  "support": "https://community.homey.app",
   "bugs": {
-    "url": "https://github.com/michelhelsdingen/ariston-net/issues"
+    "url": "https://github.com/michelhelsdingen/com.michelhelsdingen.atag-zone/issues"
   },
   "homeyCommunityTopicId": 0,
   "flow": {

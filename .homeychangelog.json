@@ -1,0 +1,6 @@
+{
+  "1.0.0": {
+    "en": "First release. Read out your ATAG Zone or Ariston NET connected boiler and room thermostat: room and outdoor temperature, target temperature, water pressure and burner status. Chaffoteaux and ELCO are selectable but untested. Flow cards for low water pressure and burner start/stop. Writing to the boiler is off by default.",
+    "nl": "Eerste release. Lees je ATAG Zone of Ariston NET cv-ketel en kamerthermostaat uit: kamer- en buitentemperatuur, doeltemperatuur, waterdruk en brander-status. Chaffoteaux en ELCO zijn kiesbaar maar ongetest. Flow-kaarten voor lage waterdruk en brander aan/uit. Schrijven naar de ketel staat standaard uit."
+  }
+}
