@@ -11,8 +11,8 @@
   },
   "drivers": {
     "thermostat": {
-      "name": "Ariston Ketel",
-      "description": "Cv-ketel met kamerthermostaat via de Ariston NET cloud."
+      "name": "Cv-ketel (Ariston NET / ATAG Zone)",
+      "description": "Cv-ketel met kamerthermostaat via de Ariston NET of ATAG Zone cloud."
     }
   }
 }

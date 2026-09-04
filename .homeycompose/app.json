@@ -11,12 +11,12 @@
   "pythonVersion": "3.14",
   "brandColor": "#0072BC",
   "name": {
-    "en": "Ariston NET",
-    "nl": "Ariston NET"
+    "en": "Ariston NET / ATAG Zone",
+    "nl": "Ariston NET / ATAG Zone"
   },
   "description": {
-    "en": "Control your Ariston NET connected boiler and room thermostat.",
-    "nl": "Bedien je Ariston NET cv-ketel en kamerthermostaat."
+    "en": "Control your Ariston NET or ATAG Zone connected boiler and room thermostat.",
+    "nl": "Bedien je Ariston NET of ATAG Zone cv-ketel en kamerthermostaat."
   },
   "category": "climate",
   "images": {
@@ -45,6 +45,9 @@
     "en": [
       "ariston",
       "ariston net",
+      "atag",
+      "atag zone",
+      "atag one",
       "cv-ketel",
       "boiler",
       "thermostat",
@@ -53,6 +56,9 @@
     "nl": [
       "ariston",
       "ariston net",
+      "atag",
+      "atag zone",
+      "atag one",
       "cv-ketel",
       "ketel",
       "thermostaat",

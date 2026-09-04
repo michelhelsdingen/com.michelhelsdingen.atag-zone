@@ -11,8 +11,8 @@
   },
   "drivers": {
     "thermostat": {
-      "name": "Ariston Boiler",
-      "description": "Combi boiler with room thermostat via the Ariston NET cloud."
+      "name": "Boiler (Ariston NET / ATAG Zone)",
+      "description": "Combi boiler with room thermostat via the Ariston NET or ATAG Zone cloud."
     }
   }
 }

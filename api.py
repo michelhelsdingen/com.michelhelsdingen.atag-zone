@@ -1,4 +1,4 @@
-"""REST API endpoints voor de Ariston NET settings-pagina.
+"""REST API endpoints voor de Ariston NET / ATAG Zone settings-pagina.
 
 Alleen de app-brede "Schrijven toestaan"-vlag. Inloggegevens staan per
 apparaat in de device store (gezet tijdens pairing), niet hier.

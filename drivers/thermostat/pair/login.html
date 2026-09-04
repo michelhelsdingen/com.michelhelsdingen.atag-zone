@@ -22,7 +22,7 @@
       font-size: 13px;
       font-weight: 600;
     }
-    input {
+    input, select {
       width: 100%;
       box-sizing: border-box;
       padding: 8px 10px;
@@ -30,6 +30,7 @@
       border: 1px solid #ccc;
       border-radius: 6px;
       font-size: 14px;
+      background: white;
     }
     button {
       margin-top: 20px;
@@ -56,8 +57,11 @@
   </style>
 </head>
 <body>
-  <h1>Inloggen bij Ariston NET</h1>
-  <p class="hint">Gebruik dezelfde inloggegevens als in de Ariston NET app.</p>
+  <h1>Inloggen</h1>
+  <p class="hint">Kies je merk en gebruik dezelfde inloggegevens als in die app (Ariston NET of ATAG Zone).</p>
+
+  <label for="brand">Merk</label>
+  <select id="brand"></select>
 
   <label for="username">E-mailadres</label>
   <input type="email" id="username" autocomplete="username">
@@ -69,10 +73,31 @@
   <div id="error"></div>
 
   <script>
+    const brandEl = document.getElementById('brand');
     const btn = document.getElementById('submit');
     const errorEl = document.getElementById('error');
 
+    async function loadBrands() {
+      try {
+        const result = await Homey.emit('get_brands', {});
+        const brands = (result && result.brands) || [];
+        const defaultId = result && result.default_brand_id;
+        brandEl.innerHTML = '';
+        for (const brand of brands) {
+          const opt = document.createElement('option');
+          opt.value = brand.id;
+          opt.textContent = brand.name;
+          if (brand.id === defaultId) opt.selected = true;
+          brandEl.appendChild(opt);
+        }
+      } catch (err) {
+        // Val terug op een vaste lijst als get_brands onverwacht faalt.
+        brandEl.innerHTML = '<option value="ariston">Ariston NET</option><option value="atag" selected>ATAG Zone</option>';
+      }
+    }
+
     btn.addEventListener('click', async () => {
+      const brand_id = brandEl.value;
       const username = document.getElementById('username').value.trim();
       const password = document.getElementById('password').value;
 
@@ -81,7 +106,7 @@
       btn.textContent = 'Bezig...';
 
       try {
-        const result = await Homey.emit('login', { username, password });
+        const result = await Homey.emit('login', { brand_id, username, password });
         if (result && result.success) {
           Homey.showView('list_devices');
         } else {
@@ -96,6 +121,8 @@
         btn.textContent = 'Inloggen';
       }
     });
+
+    loadBrands();
   </script>
 </body>
 </html>

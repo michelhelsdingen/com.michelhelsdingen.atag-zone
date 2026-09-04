@@ -15,11 +15,13 @@ import httpx
 from homey.device import Device
 
 from lib.ariston_client import (
+    DEFAULT_BRAND_ID,
     AristonAuthError,
     AristonClient,
     AristonConnectionError,
     AristonRateLimitError,
     find_item,
+    get_brand,
 )
 
 DEFAULT_POLL_INTERVAL = 180
@@ -50,9 +52,11 @@ class AristonThermostatDevice(Device):
             self.log("Geen username/password in store, device blijft unavailable")
             return
 
-        self._client = AristonClient(username, password)
+        brand = get_brand(store.get("brand_id", DEFAULT_BRAND_ID))
+        self._client = AristonClient(username, password, brand["api_url"])
         self._gw = self.get_data()["id"]
         self._features: dict = {}
+        self.log(f"Merk voor dit apparaat: {brand['name']} ({brand['api_url']})")
 
         self.register_capability_listener(
             "target_temperature", self._on_set_target_temperature

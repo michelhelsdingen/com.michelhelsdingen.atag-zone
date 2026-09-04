@@ -164,3 +164,96 @@ Niet expliciet tegen een limiet aangelopen bij de handvol requests in deze
 spike (login, plants, features, dataItems, menuItems, kort na elkaar). Geen
 harde cijfers bekend; de Homey-app moet 429 gewoon netjes afvangen met
 backoff, niet automatisch retryen op vaste intervallen.
+
+## Bestaande oplossingen: kan iets als basis dienen?
+
+Op verzoek van de hoofdsessie drie bestaande projecten bekeken voordat de
+Homey-app verder gebouwd werd. Broncode gelezen (npm pack / git clone naar
+de scratchpad), niet zomaar overgenomen.
+
+### npm: `ariston-remotethermo-client` (0.0.4)
+
+**Niet geschikt als basis.** Gebruikt de OUDE website-achtige interface
+(`/Account/Login` met form-post en cookie-jar, `/Menu/User/Refresh/`,
+`/PlantDashboard/GetPlantData/`), niet de moderne `/api/v2/` REST-API die
+deze spike gebruikt. Dependencies `request` en `requestretry`: `request` is
+sinds 2020 officieel deprecated door npm zelf (bekend, niet meer
+onderhouden, wordt afgeraden voor nieuwe projecten). GitHub-repo
+(`komw/ariston-remotethermo-client`): laatste commit oktober 2019, 27
+sterren/4 forks maar duidelijk stilgevallen. MIT-licentie. Conclusie: te
+oud, verkeerde API, onderhouden dependency-risico.
+
+### npm: `homebridge-ariston-galevo` (1.0.1)
+
+Gebruikt wél dezelfde moderne `/api/v2/`-endpoints als deze spike:
+`accounts/login`, `remote/plants`, `remote/plants/{gw}/features`,
+`remote/dataItems/{gw}/get` en `/set`, zelfde headers (`ar.authToken`,
+User-Agent `RestSharp/106.11.7.0`), zelfde 405-herauthenticatie-patroon.
+Dat bevestigt onafhankelijk dat de endpoints in `lib/ariston_client.py`
+klopten. Axios (goed onderhouden), ISC-licentie (vrij te gebruiken),
+gepubliceerd voor Homebridge (niet voor Homey). **Beperking**: modelleert
+géén kamerthermostaat/zone. Hij leest alleen `PlantMode`, `IsFlameOn`,
+`DhwTemp`, `DhwStorageTemperature`, `ChFlowSetpointTemp`,
+`HeatingFlowTemp` (zone 1, maar als CV-aanvoertemperatuur, niet als
+kamertemperatuur) en `OutsideTemp` — dus geen `ZoneMeasuredTemp`,
+`ZoneComfortTemp` of `ZoneMode`. Voor Michels situatie (kamerthermostaat is
+juist het hoofddoel) is dit onvoldoende. **Belangrijk**: de GitHub-repo
+(`M1hai/homebridge-ariston-galevo`) staat sinds kort op **archived**, 0
+sterren. Geen actief onderhouden project. Conclusie: nuttig als
+onafhankelijke bevestiging van de endpoints, niet bruikbaar als
+dependency of te forken basis (archived, geen kamerthermostaat-steun).
+
+### Homey-referentie: `AlwinTS/info.terstege.atagone` (ATAG One 2.0)
+
+Gecloned naar de scratchpad, alleen gelezen voor structuur/patronen, geen
+code overgenomen (GPL-3.0-licentie, dus copy-paste zou die licentie met
+zich meebrengen). Zijn transport is LAN (rechtstreeks naar het ATAG
+One-apparaat op het lokale netwerk), niet bruikbaar voor onze cloud-API.
+Wel bruikbare bevestigingen voor de Homey-kant:
+- Multi-instance capabilities zoals `measure_temperature.outdoor` die ik al
+  gebruikte, zijn een erkend patroon: hij gebruikt zelf `alarm_generic.boiler`
+  (dezelfde dot-suffix-truc) met een title-override in `capabilitiesOptions`.
+- Een custom pair-view kan gevolgd worden door het ingebouwde
+  `list_devices`-template via `"navigation": {"next": "add_devices"}` in
+  driver.compose.json, in plaats van zelf een lijst-view te bouwen. Nuttig
+  om te weten, maar de app hier gebruikt bewust een eigen
+  `list_devices.html` (was al gebouwd en getest vóór dit onderzoek).
+- Repo is actief (laatste push februari 2026), maar klein (0 sterren, 2
+  forks). Community-omvang dus beperkt, geen reden om eraan te twijfelen
+  als technische referentie voor SDK-patronen.
+
+**Conclusie voor de hoofdsessie**: geen van de drie is bruikbaar als
+directe basis of dependency. `lib/ariston_client.py` (eigen code, getest
+tegen de echte cloud) blijft de aangewezen route. `homebridge-ariston-galevo`
+bevestigt onafhankelijk dat de gekozen endpoints kloppen.
+
+## Ariston NET vs. ATAG Zone: zelfde account, zelfde data
+
+Michel bevestigde dat zijn thermostaat een **ATAG One Zone** is (Ariston en
+ATAG zijn beide merken van dezelfde Ariston Group, en delen kennelijk
+hetzelfde remotethermo-cloudplatform). Getest met exact dezelfde
+inloggegevens tegen twee portals:
+
+- `https://www.ariston-net.remotethermo.com/api/v2/`
+- `https://www.atagzone.remotethermo.com/api/v2/`
+
+Resultaat: **beide portals loggen in op hetzelfde account en geven
+byte-voor-byte identieke plants- en features-responses terug**, en
+dezelfde 23 dataItems met dezelfde id's/zones. De enkele waarden die
+verschilden tussen de twee test-runs (`ChFlowTemp` 64→63°C,
+`HeatingCircuitPressure` 1,6→1,0 bar, `IsFlameOn` aan→uit) zijn gewone
+live-drift tussen de twee achtereenvolgende API-calls (paar seconden
+ertussen, de ketel schakelde in die tijd de brander uit), geen verschil
+in datamodel.
+
+**Conclusie**: voor Michels account maakt het functioneel niets uit welke
+portal de app gebruikt, het is dezelfde backend achter een andere
+merknaam/domeinnaam. De praktische keuze welke portal-URL de app gebruikt
+is dus puur een branding-vraag, geen technisch verschil in wat je kunt
+uitlezen. De app laat het merk daarom kiesbaar tijdens het koppelen (met
+Ariston NET als eerste optie in de lijst, ATAG Zone als voorgeselecteerde
+standaardwaarde omdat dat is wat Michels eigen ketel gebruikt). Chaffoteaux-
+en Elco-portals (genoemd door de hoofdsessie) draaien vermoedelijk op
+hetzelfde platform, maar zijn niet getest: geen bevestigde domeinnaam
+beschikbaar, dus niet in de app opgenomen om geen giswerk in productiecode
+te zetten.

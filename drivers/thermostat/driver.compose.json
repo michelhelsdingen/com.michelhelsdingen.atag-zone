@@ -1,7 +1,7 @@
 {
   "name": {
-    "en": "Ariston Boiler",
-    "nl": "Ariston Ketel"
+    "en": "Boiler (Ariston NET / ATAG Zone)",
+    "nl": "Cv-ketel (Ariston NET / ATAG Zone)"
   },
   "class": "thermostat",
   "capabilities": [

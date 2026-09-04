@@ -1,4 +1,4 @@
-"""Ariston NET — Homey App: bedien je Ariston cv-ketel en kamerthermostaat."""
+"""Ariston NET / ATAG Zone — Homey App: bedien je cv-ketel en kamerthermostaat."""
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ import homey
 
 class App(homey.app.App):
     async def on_init(self) -> None:
-        self.log("Ariston NET starting...")
+        self.log("Ariston NET / ATAG Zone starting...")
 
         await self._register_flow_cards()
 
@@ -15,7 +15,7 @@ class App(homey.app.App):
         # andere Python Homey-apps van Michel.
         self.homey._app_instance = self
 
-        self.log("Ariston NET ready.")
+        self.log("Ariston NET / ATAG Zone ready.")
 
     async def fire_boiler_status_changed(self, device, is_on: bool) -> None:
         """Wordt aangeroepen door device.py als IsFlameOn van waarde wisselt."""

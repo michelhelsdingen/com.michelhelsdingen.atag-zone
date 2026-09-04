@@ -22,6 +22,29 @@ DEFAULT_API_URL = "https://www.ariston-net.remotethermo.com/api/v2/"
 USER_AGENT = "RestSharp/106.11.7.0"
 REQUEST_TIMEOUT = 20.0
 
+# Ariston en ATAG delen hetzelfde remotethermo cloudplatform (bevestigd:
+# zelfde account, zelfde plant, byte-identieke features/dataItems-responses
+# via beide portals, zie NOTES.md). Alleen de merk-portal (domeinnaam)
+# verschilt. Volgorde hier bepaalt de volgorde in de pairing-dropdown.
+BRANDS: list[dict[str, str]] = [
+    {
+        "id": "ariston",
+        "name": "Ariston NET",
+        "api_url": "https://www.ariston-net.remotethermo.com/api/v2/",
+    },
+    {
+        "id": "atag",
+        "name": "ATAG Zone",
+        "api_url": "https://www.atagzone.remotethermo.com/api/v2/",
+    },
+]
+DEFAULT_BRAND_ID = "atag"  # Michels eigen ketel gebruikt de ATAG Zone-app
+
+
+def get_brand(brand_id: str) -> dict[str, str]:
+    """Zoek een merk op id, valt terug op het eerste merk (Ariston NET)."""
+    return next((b for b in BRANDS if b["id"] == brand_id), BRANDS[0])
+
 # Properties die de ketel altijd wel/niet kan hebben, onafhankelijk van de
 # features-response.
 DEVICE_PROPERTIES = [
